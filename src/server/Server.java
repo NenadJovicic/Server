@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Server {
     static ArrayList<ServerskaNit> listaKlijenata= new ArrayList(0);
 	public static void main(String[] args) {
-		int port= 2222;
+		int port= 10101;
 		if (args.length>0) {
                     port = Integer.parseInt(args[0]);
                 }
