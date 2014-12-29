@@ -24,6 +24,7 @@ public class ServerskaNit extends Thread {
     ArrayList<ServerskaNit> listaKlijenata = new ArrayList<ServerskaNit>(0);
     static InetAddress adresa = null;
     boolean[] nizPodrzanihKonverzija = new boolean[4];
+    int brojac;
 
     public ServerskaNit(Socket soketZaKomentare, ArrayList<ServerskaNit> listaKlijenata) {
         this.soketZaKomentare = soketZaKomentare;
@@ -33,17 +34,16 @@ public class ServerskaNit extends Thread {
     @Override
     public void run() {
 
-        String ime;
+        //  String ime;
         String text;
 
         boolean daLiJeFalse = true;
-        boolean odgovorioNe = false;
 
         try {
             ulazniTokOdKlijenta = new BufferedReader(new InputStreamReader(soketZaKomentare.getInputStream()));
             izlazniTok = new PrintStream(soketZaKomentare.getOutputStream());
-            izlazniTok.println("Unesite Vase ime");
-            ime = ulazniTokOdKlijenta.readLine();
+//            izlazniTok.println("Unesite Vase ime");
+//            ime = ulazniTokOdKlijenta.readLine();
             adresa = soketZaKomentare.getInetAddress();
             izlazniTok.println("Unesite konverzije koje cete podrzavati kao server u obliku:\" Zelim da kao server radim sledece konverzije \" (pa onda ukucajte zeljene konverzije u obliku) Conv10to16 Conv4to8 Conv2to10 Conv5to7. "
                     + "Podrazumeva se da radi konverziju u oba smera");
@@ -74,43 +74,50 @@ public class ServerskaNit extends Thread {
                 }
 
             }
-           while (true) {
+            while (true) {
                 izlazniTok.println("Da li zelite da konvertujete neki broj? odgovorite sa DA! ili NE!");
                 if (ulazniTokOdKlijenta.readLine().contains("NE!")) {
-                    System.out.println("Da bi ste prekinuli vezu sa serverom ukucajte \"Raskini vezu sa serverom\"");
-                   break;
+                    izlazniTok.println("Da bi ste prekinuli vezu sa serverom ukucajte \"Raskini vezu sa serverom\"");
+                    break;
                 } else {
                     izlazniTok.println("Unesite koju konverziju zelite da odradite.Unosite zeljenu konverziju u obliku: \"Zelim da odradim konverziju \" (pa onda unosite zeljenu koverziju u obliku) Conv10to16 Conv4to8 Conv2to10 Conv5to7. Ako pise 10to16 podrazumeva se i obrnuta konverzija"
                             + "Mozete odabrati samo jednu konverziju");
                     text = ulazniTokOdKlijenta.readLine();
+
                     if (text.contains("Conv10to16")) {
                         for (int i = 0; i < listaKlijenata.size(); i++) {
                             if (listaKlijenata.get(i).nizPodrzanihKonverzija[0]) {
                                 izlazniTok.println("Konverziju mozete odraditi na sledecoj IP adresi "
-                                                + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
-                    //            break;
+                                        + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
+                                //            break;
                             }
                             ulazniTokOdKlijenta.readLine();
+                            brojac++;
+                            System.out.println("Broj odradjenih konverzija je: " + brojac);
                         }
 
                     } else if (text.contains("Conv4to8")) {
                         for (int i = 0; i < listaKlijenata.size(); i++) {
                             if (listaKlijenata.get(i).nizPodrzanihKonverzija[1]) {
                                 izlazniTok.println("Konverziju mozete odraditi na sledecoj IP adresi "
-                                                + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
-                      //          break;
+                                        + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
+                                //          break;
                             }
                             ulazniTokOdKlijenta.readLine();
+                            brojac++;
+                            System.out.println("Broj odradjenih konverzija je: " + brojac);
                         }
 
                     } else if (text.contains("Conv2to10")) {
                         for (int i = 0; i < listaKlijenata.size(); i++) {
                             if (listaKlijenata.get(i).nizPodrzanihKonverzija[2]) {
                                 izlazniTok.println("Konverziju mozete odraditi na sledecoj IP adresi "
-                                                + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
-                        //        break;
+                                        + listaKlijenata.get(i).adresa + ". Da bi ste se povezali sa zeljenim klijentom kucate: Konektuj se na sledecu IP adresu: #zeljenaIPadresa");
+                                //        break;
                             }
                             ulazniTokOdKlijenta.readLine();
+                            brojac++;
+                            System.out.println("Broj odradjenih konverzija je: " + brojac);
                         }
 
                     } else if (text.contains("Conv5to7")) {
@@ -122,26 +129,30 @@ public class ServerskaNit extends Thread {
 //                                break;
                             }
                             ulazniTokOdKlijenta.readLine();
+                            brojac++;
+                            System.out.println("Broj odradjenih konverzija je: " + brojac);
                         }
+                    } else {
+                        izlazniTok.println("Niste dobro uneli sta zelite da konvertujete.");
                     }
 
                 }
 
             }
-/*            if (ulazniTokOdKlijenta.readLine().startsWith("Raskini vezu sa serverom")) {
+            if (ulazniTokOdKlijenta.readLine().startsWith("Raskini vezu sa serverom")) {
                 izlazniTok.println("!!! Dovidjenja !!!");
                 soketZaKomentare.close();
-            } */
+            }
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         for (int i = 0; i < listaKlijenata.size(); i++) {
-            if (listaKlijenata.get(i)==this) {
+            if (listaKlijenata.get(i) == this) {
                 listaKlijenata.remove(i);
             }
-            
+
         }
     }
 }
